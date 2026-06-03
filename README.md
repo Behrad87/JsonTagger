@@ -287,17 +287,4 @@ Verify:
 * File extension is `.json`
 * User has read permissions
 
----
-
-# Future Enhancements
-
-* Material Design UI
-* Drag & Drop support
-* Dark / Light theme
-* Backup file creation
-* Progress bar
-* Export processing report
-* Undo changes
-* JSON diff viewer
-
  
