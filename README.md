@@ -96,16 +96,7 @@ Select Files
 
 Choose one or more JSON files.
 
-Supported examples:
 
-```text
-appsettings.json
-appsettings.Development.json
-worker.json
-custom.json
-```
-
----
 
 ## 2. Select Folder
 
@@ -250,26 +241,7 @@ Handles:
 
 # Common Issues
 
-## InitializeComponent Does Not Exist
 
-Verify:
-
-```xml
-<UseWPF>true</UseWPF>
-```
-
-exists in the project file.
-
-Clean and rebuild:
-
-```text
-bin/
-obj/
-```
-
-folders.
-
----
 
 ## JSON Validation Failed
 
