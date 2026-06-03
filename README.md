@@ -7,7 +7,6 @@ Built with:
 * .NET
 * WPF
 * MVVM Community Toolkit
-* Dependency Injection
 * Newtonsoft.Json
 
 ---
