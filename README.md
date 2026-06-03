@@ -62,7 +62,7 @@ Result:
 ## Build Requirements
 
 * Visual Studio 2022 or later
-* .NET SDK 8.0 or later
+* .NET SDK 10.0 or later
 
 Restore packages:
 
