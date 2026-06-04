@@ -12,39 +12,34 @@
         Background="Transparent"
         ResizeMode="CanResizeWithGrip">
 
-    <Window.Resources>
-        <Style x:Key="SectionLabel" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource AccentAmber}"/>
-            <Setter Property="FontSize"   Value="11"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FontFamily" Value="Segoe UI"/>
-            <Setter Property="Margin"     Value="0,0,0,0"/>
-        </Style>
-    </Window.Resources>
-
-    <Border Background="{StaticResource BgCanvas}"
+    <!-- Outer border: window shape + shadow -->
+    <Border Background="{DynamicResource BgCanvas}"
             CornerRadius="8"
-            BorderBrush="{StaticResource BorderSubtle}"
+            BorderBrush="{DynamicResource BorderSubtle}"
             BorderThickness="1">
         <Border.Effect>
-            <DropShadowEffect Color="Black" BlurRadius="28"
-                              ShadowDepth="6" Opacity="0.6"/>
+            <DropShadowEffect Color="Black" BlurRadius="28" ShadowDepth="6" Opacity="0.6"/>
         </Border.Effect>
 
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
+                <!-- Title bar   -->
                 <RowDefinition Height="Auto"/>
+                <!-- Toolbar     -->
                 <RowDefinition Height="*"/>
+                <!-- Content     -->
                 <RowDefinition Height="32"/>
+                <!-- Status bar  -->
             </Grid.RowDefinitions>
 
-            <!-- ── TITLE BAR ── -->
+            <!-- ══════════════════════════════════
+                 TITLE BAR
+                 ══════════════════════════════════ -->
             <Border Grid.Row="0"
-                    Background="{StaticResource BgSurface}"
+                    Background="{DynamicResource BgSurface}"
                     CornerRadius="8,8,0,0"
                     MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
-                <!-- gradient accent stripe at top -->
                 <Border.BorderBrush>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                         <GradientStop Color="#FF6B6B" Offset="0"/>
@@ -61,12 +56,11 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
+                    <!-- App identity -->
                     <StackPanel Orientation="Horizontal"
                                 VerticalAlignment="Center"
                                 Margin="14,0">
-                        <Border Width="22" Height="22"
-                                CornerRadius="5"
-                                Margin="0,0,9,0">
+                        <Border Width="22" Height="22" CornerRadius="5" Margin="0,0,9,0">
                             <Border.Background>
                                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                                     <GradientStop Color="#FF6B6B" Offset="0"/>
@@ -75,32 +69,46 @@
                             </Border.Background>
                             <TextBlock Text="{}{}"
                                        Foreground="#0F0E17"
-                                       FontSize="9"
-                                       FontWeight="Bold"
+                                       FontSize="9" FontWeight="Bold"
                                        FontFamily="Cascadia Code, Consolas"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
                         </Border>
                         <TextBlock Text="JSON Configuration Tagger"
-                                   Foreground="{StaticResource TextPrimary}"
-                                   FontSize="13"
-                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextPrimary}"
+                                   FontSize="13" FontWeight="SemiBold"
                                    FontFamily="Segoe UI"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
 
+                    <!-- Chrome buttons -->
                     <StackPanel Grid.Column="1"
                                 Orientation="Horizontal"
                                 VerticalAlignment="Stretch">
+
+                        <!-- Theme toggle -->
+                        <Button x:Name="ThemeToggleBtn"
+                                Style="{StaticResource ChromeBtn}"
+                                ToolTip="Toggle retro light theme"
+                                Click="ThemeToggleBtn_Click">
+                            <TextBlock x:Name="ThemeIcon"
+                                       Text="&#xE706;"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="12"
+                                       VerticalAlignment="Center"/>
+                        </Button>
+
                         <Button Style="{StaticResource ChromeBtn}"
                                 Content="&#xE921;"
                                 ToolTip="Minimize"
                                 Click="MinimizeBtn_Click"/>
-                        <Button Style="{StaticResource ChromeBtn}"
-                                x:Name="MaxRestoreBtn"
+
+                        <Button x:Name="MaxRestoreBtn"
+                                Style="{StaticResource ChromeBtn}"
                                 Content="&#xE922;"
                                 ToolTip="Maximize"
                                 Click="MaxRestoreBtn_Click"/>
+
                         <Button Style="{StaticResource ChromeBtnClose}"
                                 Content="&#xE8BB;"
                                 ToolTip="Close"
@@ -110,10 +118,12 @@
                 </Grid>
             </Border>
 
-            <!-- ── TOOLBAR ── -->
+            <!-- ══════════════════════════════════
+                 TOOLBAR
+                 ══════════════════════════════════ -->
             <Border Grid.Row="1"
-                    Background="{StaticResource BgSurface}"
-                    BorderBrush="{StaticResource BorderSubtle}"
+                    Background="{DynamicResource BgSurface}"
+                    BorderBrush="{DynamicResource BorderSubtle}"
                     BorderThickness="0,0,0,1"
                     Padding="14,8">
                 <Grid>
@@ -133,7 +143,7 @@
                                 Margin="0,0,8,0"/>
 
                         <Separator Width="1" Height="20"
-                                   Background="{StaticResource BorderSubtle}"
+                                   Background="{DynamicResource BorderSubtle}"
                                    Margin="4,0,12,0"/>
 
                         <Button Content="＋  Add Tag"
@@ -146,7 +156,7 @@
                                 Margin="0,0,8,0"/>
 
                         <Separator Width="1" Height="20"
-                                   Background="{StaticResource BorderSubtle}"
+                                   Background="{DynamicResource BorderSubtle}"
                                    Margin="4,0,12,0"/>
 
                         <Button Content="👁  Preview"
@@ -161,7 +171,9 @@
                 </Grid>
             </Border>
 
-            <!-- ── CONTENT ── -->
+            <!-- ══════════════════════════════════
+                 CONTENT
+                 ══════════════════════════════════ -->
             <Grid Grid.Row="2" Margin="14,12,14,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="220"/>
@@ -171,32 +183,29 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <!-- FILES -->
+                <!-- FILES card -->
                 <Border Grid.Row="0"
-                        Background="{StaticResource BgSurface}"
-                        BorderBrush="{StaticResource BorderSubtle}"
-                        BorderThickness="1"
-                        CornerRadius="6">
+                        Background="{DynamicResource BgSurface}"
+                        BorderBrush="{DynamicResource BorderSubtle}"
+                        BorderThickness="1" CornerRadius="6">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Border Background="{StaticResource BgCard}"
-                                BorderBrush="{StaticResource BorderSubtle}"
+
+                        <Border Background="{DynamicResource BgCard}"
+                                BorderBrush="{DynamicResource BorderSubtle}"
                                 BorderThickness="0,0,0,1"
-                                CornerRadius="6,6,0,0"
-                                Padding="14,9">
+                                CornerRadius="6,6,0,0" Padding="14,9">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="FILES" Style="{StaticResource SectionLabel}"/>
-                                <Border Background="#118AB222"
-                                        BorderBrush="#118AB255"
-                                        BorderThickness="1"
-                                        CornerRadius="10"
-                                        Padding="7,1"
-                                        Margin="10,0,0,0"
+                                <Border Background="{DynamicResource BadgeBlueBg}"
+                                        BorderBrush="{DynamicResource BadgeBlueBorder}"
+                                        BorderThickness="1" CornerRadius="10"
+                                        Padding="7,1" Margin="10,0,0,0"
                                         VerticalAlignment="Center">
-                                    <TextBlock Foreground="{StaticResource AccentBlue}"
+                                    <TextBlock Foreground="{DynamicResource AccentBlue}"
                                                FontSize="11" FontFamily="Segoe UI">
                                         <Run Text="{Binding Files.Count, Mode=OneWay}"/>
                                         <Run Text=" loaded"/>
@@ -204,6 +213,7 @@
                                 </Border>
                             </StackPanel>
                         </Border>
+
                         <DataGrid Grid.Row="1" ItemsSource="{Binding Files}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="FILE PATH"
@@ -220,11 +230,11 @@
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding IsValid}" Value="True">
                                                                 <Setter Property="Text"       Value="✓"/>
-                                                                <Setter Property="Foreground" Value="{StaticResource AccentTeal}"/>
+                                                                <Setter Property="Foreground" Value="{DynamicResource AccentTeal}"/>
                                                             </DataTrigger>
                                                             <DataTrigger Binding="{Binding IsValid}" Value="False">
                                                                 <Setter Property="Text"       Value="✗"/>
-                                                                <Setter Property="Foreground" Value="{StaticResource AccentRed}"/>
+                                                                <Setter Property="Foreground" Value="{DynamicResource AccentRed}"/>
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
@@ -234,39 +244,36 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn Header="SIZE"
-                                                    Binding="{Binding FileSizeBytes, StringFormat={}{0:N0} B}"
+                                                    Binding="{Binding FileSizeDisplay}"
                                                     Width="110"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
                 </Border>
 
-                <!-- TAGS -->
+                <!-- TAGS card -->
                 <Border Grid.Row="2"
-                        Background="{StaticResource BgSurface}"
-                        BorderBrush="{StaticResource BorderSubtle}"
-                        BorderThickness="1"
-                        CornerRadius="6">
+                        Background="{DynamicResource BgSurface}"
+                        BorderBrush="{DynamicResource BorderSubtle}"
+                        BorderThickness="1" CornerRadius="6">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Border Background="{StaticResource BgCard}"
-                                BorderBrush="{StaticResource BorderSubtle}"
+
+                        <Border Background="{DynamicResource BgCard}"
+                                BorderBrush="{DynamicResource BorderSubtle}"
                                 BorderThickness="0,0,0,1"
-                                CornerRadius="6,6,0,0"
-                                Padding="14,9">
+                                CornerRadius="6,6,0,0" Padding="14,9">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="TAGS" Style="{StaticResource SectionLabel}"/>
-                                <Border Background="#FF6B6B22"
-                                        BorderBrush="#FF6B6B55"
-                                        BorderThickness="1"
-                                        CornerRadius="10"
-                                        Padding="7,1"
-                                        Margin="10,0,0,0"
+                                <Border Background="{DynamicResource BadgeCoralBg}"
+                                        BorderBrush="{DynamicResource BadgeCoralBorder}"
+                                        BorderThickness="1" CornerRadius="10"
+                                        Padding="7,1" Margin="10,0,0,0"
                                         VerticalAlignment="Center">
-                                    <TextBlock Foreground="{StaticResource AccentCoral}"
+                                    <TextBlock Foreground="{DynamicResource AccentCoral}"
                                                FontSize="11" FontFamily="Segoe UI">
                                         <Run Text="{Binding Tags.Count, Mode=OneWay}"/>
                                         <Run Text=" entries"/>
@@ -274,6 +281,7 @@
                                 </Border>
                             </StackPanel>
                         </Border>
+
                         <DataGrid Grid.Row="1" ItemsSource="{Binding Tags}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="SECTION"
@@ -293,7 +301,7 @@
                                                     Width="28" Height="22"
                                                     FontSize="10"
                                                     Background="Transparent"
-                                                    Foreground="{StaticResource AccentCoral}"
+                                                    Foreground="{DynamicResource AccentCoral}"
                                                     BorderThickness="0"
                                                     Cursor="Hand"/>
                                         </DataTemplate>
@@ -304,32 +312,30 @@
                     </Grid>
                 </Border>
 
-                <!-- PREVIEW -->
+                <!-- PREVIEW card -->
                 <Border Grid.Row="4"
-                        Background="{StaticResource BgSurface}"
-                        BorderBrush="{StaticResource BorderSubtle}"
-                        BorderThickness="1"
-                        CornerRadius="6">
+                        Background="{DynamicResource BgSurface}"
+                        BorderBrush="{DynamicResource BorderSubtle}"
+                        BorderThickness="1" CornerRadius="6">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Border Background="{StaticResource BgCard}"
-                                BorderBrush="{StaticResource BorderSubtle}"
+
+                        <Border Background="{DynamicResource BgCard}"
+                                BorderBrush="{DynamicResource BorderSubtle}"
                                 BorderThickness="0,0,0,1"
-                                CornerRadius="6,6,0,0"
-                                Padding="14,9">
+                                CornerRadius="6,6,0,0" Padding="14,9">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="PREVIEW" Style="{StaticResource SectionLabel}"/>
                                 <TextBlock Text="— first loaded file"
-                                           Foreground="{StaticResource TextMuted}"
-                                           FontSize="11"
-                                           FontFamily="Segoe UI"
-                                           Margin="8,0,0,0"
-                                           VerticalAlignment="Center"/>
+                                           Foreground="{DynamicResource TextMuted}"
+                                           FontSize="11" FontFamily="Segoe UI"
+                                           Margin="8,0,0,0" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Border>
+
                         <TextBox Grid.Row="1"
                                  Text="{Binding JsonPreview, Mode=OneWay}"
                                  AcceptsReturn="True"
@@ -341,10 +347,12 @@
                 </Border>
             </Grid>
 
-            <!-- ── STATUS BAR ── -->
+            <!-- ══════════════════════════════════
+                 STATUS BAR
+                 ══════════════════════════════════ -->
             <Border Grid.Row="3"
-                    Background="{StaticResource BgSurface}"
-                    BorderBrush="{StaticResource BorderSubtle}"
+                    Background="{DynamicResource BgSurface}"
+                    BorderBrush="{DynamicResource BorderSubtle}"
                     BorderThickness="0,1,0,0"
                     CornerRadius="0,0,8,8"
                     Padding="14,0">
@@ -355,27 +363,24 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Ellipse Width="7" Height="7"
-                                 Margin="0,0,7,0"
-                                 VerticalAlignment="Center">
+                        <Ellipse Width="7" Height="7" Margin="0,0,7,0" VerticalAlignment="Center">
                             <Ellipse.Style>
                                 <Style TargetType="Ellipse">
-                                    <Setter Property="Fill" Value="{StaticResource TextMuted}"/>
+                                    <Setter Property="Fill" Value="{DynamicResource TextMuted}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding StatusIsSuccess}" Value="True">
-                                            <Setter Property="Fill" Value="{StaticResource AccentTeal}"/>
+                                            <Setter Property="Fill" Value="{DynamicResource AccentTeal}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding StatusIsSuccess}" Value="False">
-                                            <Setter Property="Fill" Value="{StaticResource AccentCoral}"/>
+                                            <Setter Property="Fill" Value="{DynamicResource AccentCoral}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Ellipse.Style>
                         </Ellipse>
                         <TextBlock Text="{Binding StatusMessage}"
-                                   Foreground="{StaticResource TextMuted}"
-                                   FontSize="12"
-                                   FontFamily="Segoe UI"
+                                   Foreground="{DynamicResource TextMuted}"
+                                   FontSize="12" FontFamily="Segoe UI"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
 
@@ -384,12 +389,12 @@
                                 VerticalAlignment="Center"
                                 Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <TextBlock Text="Working…"
-                                   Foreground="{StaticResource AccentAmber}"
-                                   FontSize="12"
-                                   FontFamily="Segoe UI"/>
+                                   Foreground="{DynamicResource AccentAmber}"
+                                   FontSize="12" FontFamily="Segoe UI"/>
                     </StackPanel>
                 </Grid>
             </Border>
+
         </Grid>
     </Border>
 </Window>

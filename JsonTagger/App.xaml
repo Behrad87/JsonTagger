@@ -5,83 +5,84 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+
+                <!-- Material Design base -->
                 <materialDesign:BundledTheme BaseTheme="Dark"
                                              PrimaryColor="Indigo"
-                                             SecondaryColor="Amber" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
+                                             SecondaryColor="Amber"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml"/>
+
+                <!-- Active palette — swapped at runtime by ThemeManager -->
+                <ResourceDictionary Source="pack://application:,,,/JsonTagger;component/Themes/DarkTheme.xaml"/>
+
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
-            <!-- Colorful deep navy + coral/amber palette -->
-            <SolidColorBrush x:Key="BgCanvas"     Color="#0F0E17"/>
-            <SolidColorBrush x:Key="BgSurface"    Color="#1A1A2E"/>
-            <SolidColorBrush x:Key="BgCard"       Color="#16213E"/>
-            <SolidColorBrush x:Key="BorderSubtle" Color="#0F3460"/>
-            <SolidColorBrush x:Key="TextPrimary"  Color="#FFFFFE"/>
-            <SolidColorBrush x:Key="TextMuted"    Color="#A7A9BE"/>
-            <SolidColorBrush x:Key="AccentCoral"  Color="#FF6B6B"/>
-            <SolidColorBrush x:Key="AccentAmber"  Color="#FFD166"/>
-            <SolidColorBrush x:Key="AccentTeal"   Color="#06D6A0"/>
-            <SolidColorBrush x:Key="AccentBlue"   Color="#118AB2"/>
-            <SolidColorBrush x:Key="AccentRed"    Color="#EF233C"/>
-
-            <!-- DataGrid -->
+            <!-- ═══════════════════════════════════════
+                 DataGrid
+                 NOTE: uses DynamicResource so theme swaps re-render immediately.
+                 StaticResource is resolved once at startup and never updates.
+                 ═══════════════════════════════════════ -->
             <Style TargetType="DataGrid">
-                <Setter Property="Background"               Value="{StaticResource BgCard}"/>
-                <Setter Property="Foreground"               Value="{StaticResource TextPrimary}"/>
+                <Setter Property="Background"               Value="{DynamicResource BgCard}"/>
+                <Setter Property="Foreground"               Value="{DynamicResource TextPrimary}"/>
                 <Setter Property="BorderThickness"          Value="0"/>
-                <Setter Property="RowBackground"            Value="{StaticResource BgCard}"/>
-                <Setter Property="AlternatingRowBackground" Value="#1E1E3A"/>
+                <Setter Property="RowBackground"            Value="{DynamicResource BgCard}"/>
+                <Setter Property="AlternatingRowBackground" Value="{DynamicResource BgSurface}"/>
                 <Setter Property="GridLinesVisibility"      Value="Horizontal"/>
-                <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource BorderSubtle}"/>
+                <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource BorderSubtle}"/>
                 <Setter Property="HeadersVisibility"        Value="Column"/>
                 <Setter Property="SelectionMode"            Value="Single"/>
                 <Setter Property="CanUserAddRows"           Value="False"/>
                 <Setter Property="CanUserDeleteRows"        Value="False"/>
                 <Setter Property="AutoGenerateColumns"      Value="False"/>
+                <Setter Property="VerticalGridLinesBrush"   Value="Transparent"/>
             </Style>
 
             <Style TargetType="DataGridColumnHeader">
-                <Setter Property="Background"      Value="{StaticResource BgSurface}"/>
-                <Setter Property="Foreground"      Value="{StaticResource AccentAmber}"/>
+                <Setter Property="Background"      Value="{DynamicResource BgSurface}"/>
+                <Setter Property="Foreground"      Value="{DynamicResource AccentAmber}"/>
                 <Setter Property="FontSize"        Value="11"/>
                 <Setter Property="FontWeight"      Value="SemiBold"/>
                 <Setter Property="Padding"         Value="12,8"/>
-                <Setter Property="BorderBrush"     Value="{StaticResource BorderSubtle}"/>
+                <Setter Property="BorderBrush"     Value="{DynamicResource BorderSubtle}"/>
                 <Setter Property="BorderThickness" Value="0,0,0,1"/>
             </Style>
 
             <Style TargetType="DataGridRow">
-                <Setter Property="Height" Value="36"/>
+                <Setter Property="Height"     Value="36"/>
+                <Setter Property="Background" Value="{DynamicResource BgCard}"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="#1F3A6E"/>
+                        <Setter Property="Background" Value="{DynamicResource BgHover}"/>
                     </Trigger>
                     <Trigger Property="IsSelected" Value="True">
-                        <Setter Property="Background" Value="#118AB233"/>
+                        <Setter Property="Background" Value="{DynamicResource BgSelected}"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>
 
             <Style TargetType="DataGridCell">
-                <Setter Property="Foreground"        Value="{StaticResource TextPrimary}"/>
+                <Setter Property="Foreground"        Value="{DynamicResource TextPrimary}"/>
                 <Setter Property="BorderThickness"   Value="0"/>
                 <Setter Property="Padding"           Value="12,0"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Style.Triggers>
                     <Trigger Property="IsSelected" Value="True">
-                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Background"  Value="Transparent"/>
                         <Setter Property="BorderBrush" Value="Transparent"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>
 
-            <!-- Toolbar button -->
+            <!-- ═══════════════════════════════════════
+                 Buttons
+                 ═══════════════════════════════════════ -->
             <Style x:Key="ToolbarBtn" TargetType="Button">
-                <Setter Property="Background"      Value="{StaticResource BgCard}"/>
-                <Setter Property="Foreground"      Value="{StaticResource TextPrimary}"/>
-                <Setter Property="BorderBrush"     Value="{StaticResource BorderSubtle}"/>
+                <Setter Property="Background"      Value="{DynamicResource BgCard}"/>
+                <Setter Property="Foreground"      Value="{DynamicResource TextPrimary}"/>
+                <Setter Property="BorderBrush"     Value="{DynamicResource BorderSubtle}"/>
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="Padding"         Value="14,7"/>
                 <Setter Property="FontSize"        Value="13"/>
@@ -90,7 +91,8 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}"
+                            <Border x:Name="Root"
+                                    Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     CornerRadius="6"
@@ -100,11 +102,14 @@
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#1F3A6E"/>
-                                    <Setter Property="BorderBrush" Value="{StaticResource AccentBlue}"/>
+                                    <Setter TargetName="Root" Property="Background"  Value="{DynamicResource BgHover}"/>
+                                    <Setter TargetName="Root" Property="BorderBrush" Value="{DynamicResource AccentBlue}"/>
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="True">
-                                    <Setter Property="Background" Value="{StaticResource BgSurface}"/>
+                                    <Setter TargetName="Root" Property="Background" Value="{DynamicResource BgSurface}"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.4"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -112,25 +117,19 @@
                 </Setter>
             </Style>
 
-            <!-- Primary / Apply button -->
             <Style x:Key="PrimaryBtn" TargetType="Button" BasedOn="{StaticResource ToolbarBtn}">
-                <Setter Property="Background"  Value="{StaticResource AccentTeal}"/>
-                <Setter Property="BorderBrush" Value="{StaticResource AccentTeal}"/>
-                <Setter Property="Foreground"  Value="#0F0E17"/>
+                <Setter Property="Background"  Value="{DynamicResource AccentTeal}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource AccentTeal}"/>
+                <Setter Property="Foreground"  Value="{DynamicResource PrimaryBtnFg}"/>
                 <Setter Property="FontWeight"  Value="SemiBold"/>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="#05B386"/>
-                    </Trigger>
-                </Style.Triggers>
             </Style>
 
-            <!-- Chrome (title bar) buttons -->
+            <!-- Title-bar chrome buttons -->
             <Style x:Key="ChromeBtn" TargetType="Button">
                 <Setter Property="Width"           Value="46"/>
                 <Setter Property="Height"          Value="32"/>
                 <Setter Property="Background"      Value="Transparent"/>
-                <Setter Property="Foreground"      Value="{StaticResource TextMuted}"/>
+                <Setter Property="Foreground"      Value="{DynamicResource TextMuted}"/>
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="FontFamily"      Value="Segoe MDL2 Assets"/>
                 <Setter Property="FontSize"        Value="10"/>
@@ -138,15 +137,16 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}"
+                            <Border x:Name="Root"
+                                    Background="{TemplateBinding Background}"
                                     SnapsToDevicePixels="True">
                                 <ContentPresenter HorizontalAlignment="Center"
                                                   VerticalAlignment="Center"/>
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#1F3A6E"/>
-                                    <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+                                    <Setter TargetName="Root" Property="Background" Value="{DynamicResource BgHover}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -157,22 +157,30 @@
             <Style x:Key="ChromeBtnClose" TargetType="Button" BasedOn="{StaticResource ChromeBtn}">
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="{StaticResource AccentRed}"/>
+                        <Setter Property="Background" Value="{DynamicResource AccentRed}"/>
                         <Setter Property="Foreground" Value="White"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>
 
-            <!-- Monospace TextBox for preview -->
+            <!-- Monospace preview TextBox -->
             <Style TargetType="TextBox">
-                <Setter Property="Background"      Value="{StaticResource BgCard}"/>
-                <Setter Property="Foreground"      Value="{StaticResource TextPrimary}"/>
-                <Setter Property="BorderBrush"     Value="{StaticResource BorderSubtle}"/>
+                <Setter Property="Background"      Value="{DynamicResource BgCard}"/>
+                <Setter Property="Foreground"      Value="{DynamicResource TextPrimary}"/>
+                <Setter Property="BorderBrush"     Value="{DynamicResource BorderSubtle}"/>
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="FontFamily"      Value="Cascadia Code, Consolas, monospace"/>
                 <Setter Property="FontSize"        Value="12"/>
                 <Setter Property="Padding"         Value="12"/>
-                <Setter Property="CaretBrush"      Value="{StaticResource AccentAmber}"/>
+                <Setter Property="CaretBrush"      Value="{DynamicResource AccentAmber}"/>
+            </Style>
+
+            <!-- Section label used in card headers -->
+            <Style x:Key="SectionLabel" TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{DynamicResource AccentAmber}"/>
+                <Setter Property="FontSize"   Value="11"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="FontFamily" Value="Segoe UI"/>
             </Style>
 
         </ResourceDictionary>
