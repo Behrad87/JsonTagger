@@ -4,5 +4,5 @@ public interface IDialogService
 {
     IReadOnlyList<string> OpenJsonFiles();
 
-    string? OpenFolder();
+    IReadOnlyList<string> OpenFolder();
 }

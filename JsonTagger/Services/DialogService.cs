@@ -19,11 +19,17 @@ public class DialogService : IDialogService
             ? dialog.FileNames
             : [];
     }
- 
 
-    
-    public string? OpenFolder()
+
+
+    public IReadOnlyList<string> OpenFolder()
     {
-        throw new NotImplementedException();
+        var dialog = new OpenFolderDialog();
+
+        if (dialog.ShowDialog() != true)
+            return [];
+
+        return Directory
+            .GetFiles(dialog.FolderName, "*.json", SearchOption.TopDirectoryOnly);
     }
 }

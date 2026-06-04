@@ -159,9 +159,9 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private async Task SelectFolderAsync()
     {
-        var folder = _dialogService.OpenFolder();
+        var jsonFiles = _dialogService.OpenFolder();
 
-        if (string.IsNullOrWhiteSpace(folder))
+        if (jsonFiles.Count == 0)
             return;
 
         IsBusy = true;
@@ -169,11 +169,6 @@ public partial class MainViewModel : ObservableObject
         try
         {
             Files.Clear();
-
-            var jsonFiles = Directory.GetFiles(
-                folder,
-                "*.json",
-                SearchOption.AllDirectories);
 
             foreach (var file in jsonFiles)
             {
