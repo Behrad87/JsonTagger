@@ -1,42 +1,77 @@
 ﻿using System.Windows;
 
+using JsonTagger.Properties;
+
 namespace JsonTagger;
 
-/// <summary>
-/// Swaps the active palette ResourceDictionary at runtime.
-/// Works because every brush reference in XAML uses DynamicResource,
-/// which re-evaluates whenever MergedDictionaries changes.
-/// </summary>
 public static class ThemeManager
 {
-    // Pack URIs are required when the XAML is compiled into the assembly (Build Action = Page).
-    private const string DarkUri = "pack://application:,,,/JsonTagger;component/Themes/DarkTheme.xaml";
-    private const string RetroUri = "pack://application:,,,/JsonTagger;component/Themes/RetroTheme.xaml";
+    public static IReadOnlyList<AppTheme> AvailableThemes { get; } =
+    [
+        new AppTheme("Dark",  "🌙  Dark",  "pack://application:,,,/JsonTagger;component/Themes/DarkTheme.xaml"),
+        new AppTheme("Light", "☀️  Light", "pack://application:,,,/JsonTagger;component/Themes/LightTheme.xaml"),
+        new AppTheme("Retro", "📷  Retro", "pack://application:,,,/JsonTagger;component/Themes/RetroTheme.xaml"),
+    ];
 
-    public static bool IsRetroLight { get; private set; }
+    public static AppTheme CurrentTheme { get; private set; } = AvailableThemes[0];
 
-    public static void Toggle()
+    public static event EventHandler<AppTheme>? ThemeChanged;
+
+    /// <summary>
+    /// Call once at startup — reads the persisted setting and applies it.
+    /// </summary>
+    public static void LoadSaved()
     {
-        IsRetroLight = !IsRetroLight;
-        ApplyTheme(IsRetroLight ? RetroUri : DarkUri);
+        var savedId = Settings.Default.ActiveThemeId;
+
+        var theme = AvailableThemes.FirstOrDefault(t => t.Id == savedId)
+                    ?? AvailableThemes[0]; // fall back to Dark if setting is missing/corrupt
+
+        // Apply without saving again (nothing changed yet)
+        SwapDictionary(theme.PackUri);
+        CurrentTheme = theme;
     }
 
-    private static void ApplyTheme(string uri)
+    public static void Apply(AppTheme theme)
+    {
+        if (theme == CurrentTheme) return;
+
+        SwapDictionary(theme.PackUri);
+        CurrentTheme = theme;
+
+        // Persist immediately so even a crash won't lose the preference
+        Settings.Default.ActiveThemeId = theme.Id;
+        Settings.Default.Save();
+
+        ThemeChanged?.Invoke(null, theme);
+    }
+
+    public static void Apply(string themeId)
+    {
+        var theme = AvailableThemes.FirstOrDefault(t => t.Id == themeId);
+        if (theme is not null) Apply(theme);
+    }
+
+    private static void SwapDictionary(string packUri)
     {
         var merged = Application.Current.Resources.MergedDictionaries;
 
-        // Remove the currently active theme dict (identified by its source URI)
-        var current = merged.FirstOrDefault(
-            d => d.Source is not null &&
-                 (d.Source.OriginalString.Contains("DarkTheme") ||
-                  d.Source.OriginalString.Contains("RetroTheme")));
+        var existing = merged.FirstOrDefault(d =>
+            d.Source?.OriginalString.Contains("Theme.xaml") == true);
 
-        if (current is not null)
-            merged.Remove(current);
+        if (existing is not null)
+            merged.Remove(existing);
 
         merged.Add(new ResourceDictionary
         {
-            Source = new Uri(uri, UriKind.Absolute)
+            Source = new Uri(packUri, UriKind.Absolute)
         });
     }
+}
+
+public sealed class AppTheme(string id, string displayName, string packUri)
+{
+    public string Id { get; } = id;
+    public string DisplayName { get; } = displayName;
+    public string PackUri { get; } = packUri;
 }
