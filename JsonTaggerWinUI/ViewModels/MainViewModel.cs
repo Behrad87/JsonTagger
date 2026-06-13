@@ -70,6 +70,12 @@ public partial class MainViewModel : ObservableObject
     private void AddTag() => Tags.Add(new JsonTagModel());
 
     [RelayCommand]
+    private void TagAddedNotification()
+    {
+        _notifications.ShowInfo("Tag added.");
+    }
+
+    [RelayCommand]
     private void RemoveTag(JsonTagModel tag)
     {
         if (Tags.Contains(tag))
@@ -78,6 +84,12 @@ public partial class MainViewModel : ObservableObject
 
     [RelayCommand]
     private void ClearAllTags() => Tags.Clear();
+
+    [RelayCommand]
+    private void ClearTagsNotification()
+    {
+        _notifications.ShowInfo("All tags cleared.");
+    }
 
     [RelayCommand(CanExecute = nameof(HasFiles))]
     private async Task PreviewAsync()
@@ -94,10 +106,12 @@ public partial class MainViewModel : ObservableObject
             });
 
             JsonPreview = await _jsonService.GetFormattedPreviewAsync(file.FilePath, tags);
+            _notifications.ShowSuccess("Preview generated.");
         }
         catch (Exception ex)
         {
             JsonPreview = $"// Preview failed: {ex.Message}";
+            _notifications.ShowError(ex.Message);
         }
 
         IsPreviewVisible = true;

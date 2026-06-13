@@ -1,13 +1,14 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace JsonTagger.UIServices;
 
 public class DialogService : IDialogService
 {
   
-    public IReadOnlyList<string> OpenJsonFiles()
+    public Task<IReadOnlyList<string>> OpenJsonFiles()
     {
         var dialog = new Microsoft.Win32.OpenFileDialog
         {
@@ -15,22 +16,22 @@ public class DialogService : IDialogService
             Filter = "JSON Files (*.json)|*.json"
         };
 
-        return dialog.ShowDialog() == true
-            ? dialog.FileNames
-            : Array.Empty<string>();
+        var res = dialog.ShowDialog() == true ? dialog.FileNames : Array.Empty<string>();
+        return Task.FromResult((IReadOnlyList<string>)res);
     }
 
 
 
-    public IReadOnlyList<string> OpenFolder()
+    public Task<IReadOnlyList<string>> OpenFolder()
     {
         var dialog = new System.Windows.Forms.FolderBrowserDialog();
 
         var result = dialog.ShowDialog();
         if (result != System.Windows.Forms.DialogResult.OK || string.IsNullOrWhiteSpace(dialog.SelectedPath))
-            return Array.Empty<string>();
+            return Task.FromResult((IReadOnlyList<string>)Array.Empty<string>());
 
-        return Directory.GetFiles(dialog.SelectedPath, "*.json", SearchOption.TopDirectoryOnly);
+        var files = Directory.GetFiles(dialog.SelectedPath, "*.json", SearchOption.TopDirectoryOnly);
+        return Task.FromResult((IReadOnlyList<string>)files);
     }
 }
 

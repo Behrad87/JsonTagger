@@ -10,15 +10,12 @@ namespace JsonTaggerWinUI.UIServices;
 
 public class DialogService : IDialogService
 {
-    private nint _mainWindowHandle;
+    private readonly Func<nint> _getWindowHandle;
 
-    public DialogService(nint mainWindowHandle)
+    public DialogService(Func<nint> getWindowHandle)
     {
-        _mainWindowHandle = mainWindowHandle;
+        _getWindowHandle = getWindowHandle ?? (() => 0);
     }
-
-    public void SetWindowHandle(nint handle) => _mainWindowHandle = handle;
-
     //public IReadOnlyList<string> OpenJsonFiles()
     //{
     //    var dialog = new OpenFileDialog
@@ -62,8 +59,9 @@ public class DialogService : IDialogService
     {
         var picker = new FileOpenPicker();
         // Initialize with current window handle if we have one
-        if (_mainWindowHandle != 0)
-            WinRT.Interop.InitializeWithWindow.Initialize(picker, _mainWindowHandle); // Need HWND helper
+        var handle = _getWindowHandle();
+        if (handle != 0)
+            WinRT.Interop.InitializeWithWindow.Initialize(picker, handle);
 
         picker.FileTypeFilter.Add(".json");
         picker.ViewMode = PickerViewMode.List;

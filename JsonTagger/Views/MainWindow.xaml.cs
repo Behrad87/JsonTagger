@@ -20,6 +20,8 @@ public partial class MainWindow : Window
         UpdateThemeIcon(ThemeManager.CurrentTheme);
     }
 
+    public JsonTagger.Controls.NotificationHost NotificationHostControl => NotificationHost;
+
     // ── Title bar ────────────────────────────────────────────────────────────
 
     private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

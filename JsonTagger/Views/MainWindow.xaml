@@ -1,6 +1,7 @@
 <Window x:Class="JsonTagger.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:JsonTagger.Controls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
@@ -90,6 +91,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="32"/>
             </Grid.RowDefinitions>
+
 
             <!-- ══════════════════════════════════
                  TITLE BAR
@@ -427,6 +429,9 @@
                 </Grid>
             </Border>
 
+            <!-- Notification host must be the last child so it renders on top of other UI
+                 elements. It should not block input, so IsHitTestVisible is false. -->
+            <controls:NotificationHost x:Name="NotificationHost" Panel.ZIndex="1000" IsHitTestVisible="False" />
         </Grid>
     </Border>
 </Window>

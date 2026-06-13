@@ -8,9 +8,61 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <!-- Other merged dictionaries here -->
+                <ResourceDictionary Source="Themes/DarkTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <!-- Other app resources here -->
+
+            <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+            <!-- Simplified button styles to approximate WPF look -->
+            <Style x:Key="ToolbarBtn" TargetType="Button">
+                <Setter Property="Background" Value="{StaticResource BgCard}" />
+                <Setter Property="Foreground" Value="{StaticResource TextPrimary}" />
+                <Setter Property="BorderBrush" Value="{StaticResource BorderSubtle}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Padding" Value="14,7" />
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="FontFamily" Value="Segoe UI" />
+            </Style>
+
+            <Style x:Key="PrimaryBtn" TargetType="Button" BasedOn="{StaticResource ToolbarBtn}">
+                <Setter Property="Background" Value="{StaticResource AccentTeal}" />
+                <Setter Property="BorderBrush" Value="{StaticResource AccentTeal}" />
+                <Setter Property="Foreground" Value="{StaticResource PrimaryBtnFg}" />
+                <Setter Property="FontWeight" Value="SemiBold" />
+            </Style>
+
+            <Style x:Key="ChromeBtn" TargetType="Button">
+                <Setter Property="Width" Value="46" />
+                <Setter Property="Height" Value="32" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Foreground" Value="{StaticResource TextMuted}" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+                <Setter Property="FontSize" Value="10" />
+            </Style>
+
+            <Style x:Key="ChromeBtnClose" TargetType="Button" BasedOn="{StaticResource ChromeBtn}">
+                <Setter Property="Foreground" Value="{StaticResource TextMuted}" />
+            </Style>
+
+            <Style TargetType="TextBox">
+                <Setter Property="Background" Value="{StaticResource BgCard}" />
+                <Setter Property="Foreground" Value="{StaticResource TextPrimary}" />
+                <Setter Property="BorderBrush" Value="{StaticResource BorderSubtle}" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="FontFamily" Value="Cascadia Mono, Consolas, monospace" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="Padding" Value="12" />
+            </Style>
+
+            <Style x:Key="SectionLabel" TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{StaticResource AccentAmber}" />
+                <Setter Property="FontSize" Value="11" />
+                <Setter Property="FontWeight" Value="SemiBold" />
+                <Setter Property="FontFamily" Value="Segoe UI" />
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
+    <Application.RequestedTheme>Dark</Application.RequestedTheme>
 </Application>

@@ -29,8 +29,8 @@ public partial class MainViewModel : ObservableObject
 
     // ── Collections ─────────────────────────────────────────────────────────
 
-    public ObservableCollection<JsonFileModel> Files { get; } = [];
-    public ObservableCollection<JsonTagModel> Tags { get; } = [];
+    public ObservableCollection<JsonFileModel> Files { get; } = new();
+    public ObservableCollection<JsonTagModel> Tags { get; } = new();
 
     // ── Observable properties ────────────────────────────────────────────────
 
@@ -45,19 +45,21 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(IsNotBusy))]
     private async Task BrowseFilesAsync()
     {
-        var paths = _dialogService.OpenJsonFiles();
-        if (paths.Count == 0) return;
+        var paths = await _dialogService.OpenJsonFiles();
+        if (paths == null || paths.Count == 0) return;
 
         await LoadFilesAsync(paths);
+        _notifications.ShowSuccess(StatusMessage);
     }
 
     [RelayCommand(CanExecute = nameof(IsNotBusy))]
     private async Task SelectFolderAsync()
     {
-        var files = _dialogService.OpenFolder();
-        if (files.Count == 0) return;
+        var files = await _dialogService.OpenFolder();
+        if (files == null || files.Count == 0) return;
 
         await LoadFilesAsync(files);
+        _notifications.ShowSuccess(StatusMessage);
     }
 
     [RelayCommand]
@@ -191,6 +193,10 @@ public partial class MainViewModel : ObservableObject
                 : $"{Files.Count} file(s) loaded — {invalidCount} invalid.";
 
             SetStatus(msg, success: invalidCount == 0);
+            if (invalidCount == 0)
+                _notifications.ShowSuccess(msg);
+            else
+                _notifications.ShowWarning(msg);
         }
         catch (Exception ex)
         {

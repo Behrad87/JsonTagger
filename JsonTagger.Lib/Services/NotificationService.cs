@@ -1,4 +1,5 @@
 ﻿using JsonTagger.Lib.Models;
+using System.Diagnostics;
 
 namespace JsonTagger.Lib.Services;
 
@@ -13,5 +14,8 @@ public class NotificationService : INotificationService
     public void ShowInfo(string message) => Raise(message, NotificationType.Info);
 
     private void Raise(string message, NotificationType type)
-        => NotificationRaised?.Invoke(message, type);
+    {
+        Debug.WriteLine($"NotificationService.Raise: {type} - {message}");
+        NotificationRaised?.Invoke(message, type);
+    }
 }
