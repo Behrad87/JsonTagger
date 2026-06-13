@@ -1,0 +1,74 @@
+<!-- MainWindow.xaml -->
+<Window x:Class="JsonTagger.WinUI.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="using:Microsoft.UI.Xaml.Controls"
+        Title="JSON Configuration Tagger"
+        Width="1280" Height="860"
+        MinWidth="900" MinHeight="600"
+        ExtendsContentIntoTitleBar="True">
+
+    <Grid>
+        <!-- Title Bar -->
+        <Grid x:Name="AppTitleBar" Height="48" Background="Transparent" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal" Margin="12,0">
+                <TextBlock Text="JSON Configuration Tagger" Style="{StaticResource TitleTextBlockStyle}" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Margin="0,48,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Toolbar -->
+            <CommandBar Grid.Row="0" DefaultLabelPosition="Right">
+                <AppBarButton Label="Select Files" Icon="OpenFile" Command="{Binding BrowseFilesCommand}"/>
+                <AppBarButton Label="Select Folder" Icon="Folder" Command="{Binding SelectFolderCommand}"/>
+                <AppBarSeparator/>
+                <AppBarButton Label="Add Tag" Icon="Add" Command="{Binding AddTagCommand}"/>
+                <AppBarButton Label="Clear Tags" Icon="Delete" Command="{Binding ClearAllTagsCommand}"/>
+                <AppBarButton Label="Preview" Icon="Preview" Command="{Binding PreviewCommand}"/>
+                <AppBarButton Label="Apply Changes" Icon="Save" Command="{Binding ApplyTagsCommand}" Style="{StaticResource AccentButtonStyle}"/>
+            </CommandBar>
+
+            <!-- Content -->
+            <Grid Grid.Row="1" Padding="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Files -->
+                <ui:Card Grid.Column="0" Margin="0,0,8,0" Header="Files">
+                    <ListView ItemsSource="{Binding Files}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock Text="{Binding FileName}"/>
+                                    <TextBlock Text="{Binding FileSizeDisplay}" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ui:Card>
+
+                <!-- Tags -->
+                <ui:Card Grid.Column="1" Margin="8,0,0,0" Header="Tags">
+                    <ListView ItemsSource="{Binding Tags}">
+                        <!-- Similar to WPF, but use TextBoxes with TwoWay binding -->
+                    </ListView>
+                </ui:Card>
+            </Grid>
+
+            <!-- Preview -->
+            <ui:Card Grid.Row="2" Margin="16" Header="Preview (First File)">
+                <ScrollViewer>
+                    <TextBox Text="{Binding JsonPreview}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" FontFamily="Cascadia Mono"/>
+                </ScrollViewer>
+            </ui:Card>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,111 @@
+<!-- MainWindow.xaml -->
+<Window x:Class="JsonTaggerWinUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="using:Microsoft.UI.Xaml.Controls" xmlns:x1="using:System"
+        Title="JSON Configuration Tagger">
+
+    <Grid x:Name="RootGrid">
+        <!-- Title Bar -->
+        <Grid x:Name="AppTitleBar" Height="48" Background="Transparent" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal" Margin="12,0">
+                <!-- inline styling instead of missing StaticResource -->
+                <TextBlock Text="JSON Configuration Tagger" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Margin="0,48,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Toolbar -->
+            <CommandBar Grid.Row="0" DefaultLabelPosition="Right">
+                <AppBarButton Label="Select Files" Command="{Binding BrowseFilesCommand}">
+                    <AppBarButton.Icon>
+                        <SymbolIcon Symbol="OpenFile"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+
+                <AppBarButton Label="Select Folder" Command="{Binding SelectFolderCommand}">
+                    <AppBarButton.Icon>
+                        <SymbolIcon Symbol="Folder"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+
+                <AppBarSeparator/>
+
+                <AppBarButton Label="Add Tag" Command="{Binding AddTagCommand}">
+                    <AppBarButton.Icon>
+                        <SymbolIcon Symbol="Add"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+
+                <AppBarButton Label="Clear Tags" Command="{Binding ClearAllTagsCommand}">
+                    <AppBarButton.Icon>
+                        <SymbolIcon Symbol="Delete"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+
+                <AppBarButton Label="Preview" Command="{Binding PreviewCommand}">
+                    <AppBarButton.Icon>
+                        <SymbolIcon Symbol="View"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+
+                <AppBarButton Label="Apply Changes" Command="{Binding ApplyTagsCommand}">
+                    <AppBarButton.Icon>
+                        <SymbolIcon Symbol="Save"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBar>
+
+            <!-- Content -->
+            <Grid Grid.Row="1" Padding="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Files -->
+                <Border Grid.Column="0" Margin="0,0,8,0"   CornerRadius="6" >
+                    <StackPanel>
+                        <TextBlock Text="Files" FontWeight="SemiBold" Padding="12"/>
+                        <ListView ItemsSource="{Binding Files}" Margin="12,0,12,12">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <TextBlock Text="{Binding FileName}"/>
+                                        <TextBlock Text="{Binding FileSizeDisplay}" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+                </Border>
+
+                <!-- Tags -->
+                <Border Grid.Column="1" Margin="8,0,0,0"   CornerRadius="6"   >
+                    <StackPanel>
+                        <TextBlock Text="Tags" FontWeight="SemiBold" Padding="12"/>
+                        <ListView ItemsSource="{Binding Tags}" Margin="12,0,12,12">
+                            <!-- Use proper item template in ViewModel as needed -->
+                        </ListView>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Preview -->
+            <Border Grid.Row="2" Margin="16"  CornerRadius="6" >
+                <StackPanel>
+                    <TextBlock Text="Preview (First File)" FontWeight="SemiBold" Padding="12"/>
+                    <ScrollViewer Margin="12" Height="180">
+                        <TextBox Text="{Binding JsonPreview}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" FontFamily="Cascadia Mono"/>
+                    </ScrollViewer>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

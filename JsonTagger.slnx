@@ -1,3 +1,8 @@
 <Solution>
+  <Project Path="JsonTagger.Lib/JsonTagger.Lib.csproj" Id="2fb1c9d7-bb8f-4973-9ce2-55627d1f38f8" />
   <Project Path="JsonTagger/JsonTagger.csproj" />
+  <Project Path="JsonTaggerWinUI/JsonTaggerWinUI.csproj" Id="eb50c749-aa93-464f-b988-ff22b79d93fb">
+    <Platform Project="x64" />
+    <Deploy />
+  </Project>
 </Solution>

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "JsonTagger.WinUI (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "JsonTagger.WinUI (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
