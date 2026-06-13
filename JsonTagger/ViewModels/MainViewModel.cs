@@ -1,9 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-using JsonTagger.Services;
+using JsonTagger.Lib.Services;
+using JsonTagger.Lib.Models;
 
 using System.Collections.ObjectModel;
+using JsonTagger.UIServices;
 
 namespace JsonTagger.ViewModels;
 

@@ -1,4 +1,4 @@
-﻿namespace JsonTagger.Services;
+﻿namespace JsonTagger.UIServices;
 
 public interface IDialogService
 {

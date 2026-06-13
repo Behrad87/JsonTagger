@@ -1,4 +1,5 @@
-using JsonTagger.Services;
+using JsonTagger.Lib.Services;
+using JsonTagger.UIServices;
 using JsonTagger.ViewModels;
 using JsonTagger.Views;
 

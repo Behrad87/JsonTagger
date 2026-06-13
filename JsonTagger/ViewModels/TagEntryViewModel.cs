@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
+using JsonTagger.Lib.Models;
+
 namespace JsonTagger.ViewModels;
 
 public partial class TagEntryViewModel : ObservableObject
